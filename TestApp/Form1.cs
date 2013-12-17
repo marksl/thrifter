@@ -101,7 +101,7 @@ namespace TestApp
                     {
                         // AH OKAY... so I need to create thrift objects and populate the properties 
                         // based on what is the current value of the thrift objects... hmmmm.. shouldn't be too hard
-                        var thriftObjects = CreateThriftObjects(response, "Response", null);
+                        var thriftObjects = CreateResponseThriftObjects(response, "Response", null);
                         objs.Add(thriftObjects);
                     }
                 }
@@ -109,7 +109,7 @@ namespace TestApp
                 {
                     // AH OKAY... so I need to create thrift objects and populate the properties 
                     // based on what is the current value of the thrift objects... hmmmm.. shouldn't be too hard
-                    var thriftObjects = CreateThriftObjects(target.InnerException, "Response", null);
+                    var thriftObjects = CreateResponseThriftObjects(target.InnerException, "Response", null);
                     objs.Add(thriftObjects);
                 }
 
@@ -206,17 +206,18 @@ namespace TestApp
         }
 
 
-        private void CreateThriftObjects(object obj, IEnumerable<PropertyInfo> getParameters, ThriftObject parentObj)
+        private void CreateResponseThriftObjects(object obj, IEnumerable<PropertyInfo> getParameters, ThriftObject parentObj)
         {
             foreach (var parameter in getParameters)
             {
-                Type type = parameter.PropertyType;
+                var newObj = parameter.GetValue(obj, null);
+
                 // TODO: fix this
-                CreateThriftObjects(type, parameter.Name, parentObj);
+                CreateResponseThriftObjects(newObj, parameter.Name, parentObj);
             }
         }
 
-        private ThriftObject CreateThriftObjects(object obj, string propertyName, ThriftObject parentObj)
+        private ThriftObject CreateResponseThriftObjects(object obj, string propertyName, ThriftObject parentObj)
         {
             var objType = obj.GetType();
             
@@ -227,13 +228,18 @@ namespace TestApp
                                PropertyName = string.Format("{0}={1}", propertyName, obj),
                                ObjType = objType
                            };
+            if (parentObj != null)
+            {
+                parentObj.ChildObjs.Add(t);
+            }
+
             if (objType.IsValueType || obj is string)
             {
                 
                 return t;
             }
 
-            CreateThriftObjects(obj, objType.GetProperties(), t);
+            CreateResponseThriftObjects(obj, objType.GetProperties(), t);
 
             return t;
         }
