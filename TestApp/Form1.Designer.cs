@@ -40,6 +40,10 @@
             this.label4 = new System.Windows.Forms.Label();
             this.sendButton = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
+            this.requestTreeView = new System.Windows.Forms.TreeView();
+            this.responseTreeView = new System.Windows.Forms.TreeView();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // urlComboBox
@@ -89,6 +93,7 @@
             // 
             // protocolComboBox
             // 
+            this.protocolComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.protocolComboBox.FormattingEnabled = true;
             this.protocolComboBox.Location = new System.Drawing.Point(22, 438);
             this.protocolComboBox.Name = "protocolComboBox";
@@ -106,6 +111,7 @@
             // 
             // methodComboBox
             // 
+            this.methodComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.methodComboBox.FormattingEnabled = true;
             this.methodComboBox.Location = new System.Drawing.Point(22, 487);
             this.methodComboBox.Name = "methodComboBox";
@@ -124,7 +130,7 @@
             // 
             // sendButton
             // 
-            this.sendButton.Location = new System.Drawing.Point(22, 529);
+            this.sendButton.Location = new System.Drawing.Point(22, 638);
             this.sendButton.Name = "sendButton";
             this.sendButton.Size = new System.Drawing.Size(486, 46);
             this.sendButton.TabIndex = 12;
@@ -141,11 +147,48 @@
             this.label5.TabIndex = 13;
             this.label5.Text = "Thrift";
             // 
+            // requestTreeView
+            // 
+            this.requestTreeView.LabelEdit = true;
+            this.requestTreeView.Location = new System.Drawing.Point(22, 525);
+            this.requestTreeView.Name = "requestTreeView";
+            this.requestTreeView.ShowNodeToolTips = true;
+            this.requestTreeView.Size = new System.Drawing.Size(486, 107);
+            this.requestTreeView.TabIndex = 14;
+            // 
+            // responseTreeView
+            // 
+            this.responseTreeView.Location = new System.Drawing.Point(22, 730);
+            this.responseTreeView.Name = "responseTreeView";
+            this.responseTreeView.Size = new System.Drawing.Size(486, 107);
+            this.responseTreeView.TabIndex = 15;
+            // 
+            // label3
+            // 
+            this.label3.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.label3.Location = new System.Drawing.Point(22, 699);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(486, 2);
+            this.label3.TabIndex = 16;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(22, 711);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(55, 13);
+            this.label6.TabIndex = 17;
+            this.label6.Text = "Response";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(530, 849);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.responseTreeView);
+            this.Controls.Add(this.requestTreeView);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.sendButton);
             this.Controls.Add(this.methodComboBox);
@@ -177,6 +220,10 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button sendButton;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.TreeView requestTreeView;
+        private System.Windows.Forms.TreeView responseTreeView;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label6;
     }
 }
 

@@ -10,11 +10,16 @@ namespace HttpTest
 
         public bool postTweet(Tweet tweet)
         {
+            if (tweet != null && tweet.Text == "foo")
+                throw new TwitterUnavailable();
+
             return true;
         }
 
         public TweetSearchResult searchTweets(string query)
         {
+            
+
             return new TweetSearchResult
                        {
                            Tweets = new List<Tweet>
