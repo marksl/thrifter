@@ -87,38 +87,38 @@ namespace TestApp
                 object[] parameters = GetParameters();
 
 
-                //Cursor.Current = Cursors.WaitCursor;
+                Cursor.Current = Cursors.WaitCursor;
 
-                //List<ThriftObject> objs = new List<ThriftObject>();
+                List<ThriftObject> objs = new List<ThriftObject>();
 
-                //responseTreeView.Nodes.Clear();
-                //responseTreeView.BeginUpdate();
+                responseTreeView.Nodes.Clear();
+                responseTreeView.BeginUpdate();
 
-                //try
-                //{
-                //    object response = client.Method.Invoke(instance, parameters);
-                //    if (response != null)
-                //    {
-                //        // AH OKAY... so I need to create thrift objects and populate the properties 
-                //        // based on what is the current value of the thrift objects... hmmmm.. shouldn't be too hard
-                //        var thriftObjects = CreateThriftObjects(response.GetType(), "Response", null);
-                //        objs.Add(thriftObjects);
-                //    }
-                //}
-                //catch (TargetInvocationException target)
-                //{
-                //    // AH OKAY... so I need to create thrift objects and populate the properties 
-                //    // based on what is the current value of the thrift objects... hmmmm.. shouldn't be too hard
-                //    var thriftObjects = CreateThriftObjects(target.InnerException.GetType(), "Response", null);
-                //    objs.Add(thriftObjects);
-                //}
+                try
+                {
+                    object response = client.Method.Invoke(instance, parameters);
+                    if (response != null)
+                    {
+                        // AH OKAY... so I need to create thrift objects and populate the properties 
+                        // based on what is the current value of the thrift objects... hmmmm.. shouldn't be too hard
+                        var thriftObjects = CreateThriftObjects(response, "Response", null);
+                        objs.Add(thriftObjects);
+                    }
+                }
+                catch (TargetInvocationException target)
+                {
+                    // AH OKAY... so I need to create thrift objects and populate the properties 
+                    // based on what is the current value of the thrift objects... hmmmm.. shouldn't be too hard
+                    var thriftObjects = CreateThriftObjects(target.InnerException, "Response", null);
+                    objs.Add(thriftObjects);
+                }
 
-                //MyTreeNode[] nodes = ConvertToTreeNodes(objs);
-                //responseTreeView.Nodes.AddRange(nodes);
+                MyTreeNode[] nodes = ConvertToTreeNodes(objs);
+                responseTreeView.Nodes.AddRange(nodes);
 
-                //responseTreeView.EndUpdate();
+                responseTreeView.EndUpdate();
 
-                //Cursor.Current = Cursors.Default;
+                Cursor.Current = Cursors.Default;
             }
         }
 
@@ -204,6 +204,40 @@ namespace TestApp
                 CreateThriftObjects(type, parameter.Name, parentObj);
             }
         }
+
+
+        private void CreateThriftObjects(object obj, IEnumerable<PropertyInfo> getParameters, ThriftObject parentObj)
+        {
+            foreach (var parameter in getParameters)
+            {
+                Type type = parameter.PropertyType;
+                // TODO: fix this
+                CreateThriftObjects(type, parameter.Name, parentObj);
+            }
+        }
+
+        private ThriftObject CreateThriftObjects(object obj, string propertyName, ThriftObject parentObj)
+        {
+            var objType = obj.GetType();
+            
+            var t= new ThriftObject
+                           {
+                               Obj = obj, // Probably not needed
+                               ParentObj = parentObj,
+                               PropertyName = string.Format("{0}={1}", propertyName, obj),
+                               ObjType = objType
+                           };
+            if (objType.IsValueType || obj is string)
+            {
+                
+                return t;
+            }
+
+            CreateThriftObjects(obj, objType.GetProperties(), t);
+
+            return t;
+        }
+
 
         private List<ThriftObject> CreateThriftObjects(IEnumerable<ParameterInfo> getParameters)
         {
