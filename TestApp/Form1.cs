@@ -64,15 +64,20 @@ namespace TestApp
 
         private void Process_Click(object sender, EventArgs e)
         {
+            a = null;
+            GC.Collect();
+            GC.WaitForFullGCComplete();
+
             var g = new CSharpGenerator(thriftText.Text);
             string assembly = g.Generate();
-            //string assembly = ".\\compiled\\TempThriftGen.dll";
-
+            
             a = new AssemblyLoader(assembly);
             a.Load();
 
-
             methodComboBox.DataSource = a.MethodNames.Select(x => new Item(x, x)).ToList();
+
+            requestTreeView.Nodes.Clear();
+            responseTreeView.Nodes.Clear();
         }
 
         private void sendButton_Click(object sender, EventArgs e)

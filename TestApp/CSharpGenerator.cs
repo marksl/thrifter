@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Xml;
 using Microsoft.Build.Evaluation;
 using Microsoft.Build.Framework;
@@ -74,7 +75,11 @@ namespace TestApp
             process.StartInfo = startInfo;
             process.Start();
 
-
+            int i = 0;
+            while (!process.HasExited && i++ < 5)
+            {
+                Thread.Sleep(2000);
+            }
 
             // 3. Compile generated C# files
 
@@ -108,6 +113,7 @@ namespace TestApp
                     project.ProjectCollection.UnloadAllProjects();
                     project.FullPath = Path.Combine(Directory.GetCurrentDirectory(), ".\\foo\\");
 
+                    string assembly = "TempThriftGen" + Guid.NewGuid().ToString();
                     //var propertyGroup = project.Properties
                     var properties = new Dictionary<string, string>
                                          {
@@ -116,7 +122,7 @@ namespace TestApp
                                              {"ProjectGuid", Guid.NewGuid().ToString()},
                                              {"ProjectVersion", "8.0.30703"},
                                              {"SchemaVersion", "2.0"},
-                                             {"AssemblyName", "TempThriftGen"},
+                                             {"AssemblyName", assembly},
                                              {"TargetFrameworkVersion", "v4.0"},
                                              {"OutputType", "Library"},
                                              {"FileAlignment", "512"},
@@ -131,7 +137,7 @@ namespace TestApp
                         project.SetProperty(prop.Key, prop.Value);
                     }
 
-                    var outputFolder = Path.Combine(Directory.GetCurrentDirectory(), "gen-csharp");
+                    var outputFolder = Path.Combine(Directory.GetCurrentDirectory(), ".\\gen-csharp\\");
                     foreach (string file in Directory.GetFiles(outputFolder, "*.cs"))
                     {
                         int index = file.LastIndexOf("\\gen-csharp", StringComparison.Ordinal);
@@ -144,7 +150,8 @@ namespace TestApp
                     project.AddItem("Reference", "System.Core");
 
                     bool success = project.Build("Build", new List<ILogger> {logger});
-                    return success ? ".\\compiled\\TempThriftGen.dll" : null;
+                    project.ProjectCollection.UnloadAllProjects();
+                    return success ? ".\\compiled\\" + assembly + ".dll" : null;
                 }
             }
         }
