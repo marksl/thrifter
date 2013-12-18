@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -225,7 +226,7 @@ namespace TestApp
                            {
                                Obj = obj, // Probably not needed
                                ParentObj = parentObj,
-                               PropertyName = string.Format("{0}={1}", propertyName, obj),
+                               PropertyName = string.Format("{0}={1}", propertyName, obj.GetType().Name),
                                ObjType = objType
                            };
             if (parentObj != null)
@@ -233,9 +234,29 @@ namespace TestApp
                 parentObj.ChildObjs.Add(t);
             }
 
+            if (objType.IsGenericType && objType.GetGenericTypeDefinition() == typeof(List<>))
+            {
+                var list = obj as IEnumerable;
+
+                foreach (var l in list)
+                {
+                    var t2 = new ThriftObject
+                    {
+                        Obj = l, // Probably not needed
+                        ParentObj = t,
+                        PropertyName = string.Format("{0}={1}", propertyName, l.GetType().Name),
+                        ObjType = l.GetType()
+                    };
+                    t.ChildObjs.Add(t2);
+
+                    CreateResponseThriftObjects(l, l.GetType().GetProperties(), t2);
+                }
+
+                return t;
+            }
+
             if (objType.IsValueType || obj is string)
             {
-                
                 return t;
             }
 
@@ -337,14 +358,20 @@ namespace TestApp
             {
                 //if (ParentObj == null)
                 //{
-                if (ObjType == typeof (int))
+                if (ObjType == typeof(int))
                     Obj = Convert.ToInt32(value);
-                else if (ObjType == typeof (short))
+                else if (ObjType == typeof(short))
                     Obj = Convert.ToInt16(value);
-                else if (ObjType == typeof (long))
+                else if (ObjType == typeof(long))
                     Obj = Convert.ToInt64(value);
-                else if (ObjType == typeof (string))
+                else if (ObjType == typeof(string))
                     Obj = value;
+                else if (ObjType == typeof(double))
+                    Obj = Convert.ToDouble(value);
+                else if (ObjType == typeof(bool))
+                    Obj = Convert.ToBoolean(value);
+                else if (ObjType == typeof (char))
+                    Obj = Convert.ToChar(value);
                 else if (ObjType.IsEnum)
                     Obj = Enum.Parse(Obj.GetType(), value);
                 else
