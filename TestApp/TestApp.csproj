@@ -56,16 +56,23 @@
   <ItemGroup>
     <Compile Include="AssemblyLoader.cs" />
     <Compile Include="CSharpGenerator.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="ThriftMethod.cs" />
+    <Compile Include="UI\ThrifterForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="UI\ThrifterForm.Designer.cs">
+      <DependentUpon>ThrifterForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="Thrift.cs" />
+    <Compile Include="ThriftObject.cs" />
+    <Compile Include="ThriftObjectFactory.cs" />
+    <Compile Include="ThriftResponseObjectFactory.cs" />
+    <Compile Include="UI\ThrifterComboBoxItem.cs" />
+    <Compile Include="UI\ThrifterTreeNode.cs" />
+    <EmbeddedResource Include="UI\ThrifterForm.resx">
+      <DependentUpon>ThrifterForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

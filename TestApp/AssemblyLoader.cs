@@ -8,9 +8,9 @@ using Thrift.Transport;
 
 namespace TestApp
 {
-    public class Client
+    public class ClassAndMethod
     {
-        public Type ClientType { get; set; }
+        public Type ClassType { get; set; }
         public MethodInfo Method { get; set; }
     }
 
@@ -30,9 +30,9 @@ namespace TestApp
         }
 
 
-        readonly Dictionary<string, Client> methodClassMappings= new Dictionary<string, Client>();
+        readonly Dictionary<string, ClassAndMethod> methodClassMappings= new Dictionary<string, ClassAndMethod>();
 
-        public Client GetClient(string methodName)
+        public ClassAndMethod GetClient(string methodName)
         {
             return methodClassMappings[methodName];
         }
@@ -50,9 +50,9 @@ namespace TestApp
                     var interfaceType = type.GetInterface("Iface");
                     foreach (var method in interfaceType.GetMethods())
                     {
-                        methodClassMappings.Add(method.Name, new Client
+                        methodClassMappings.Add(method.Name, new ClassAndMethod
                                                                  {
-                                                                     ClientType = type,
+                                                                     ClassType = type,
                                                                      Method = method
                                                                  });
                     }

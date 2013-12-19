@@ -51,11 +51,13 @@ namespace TestApp
             }
         }
 
-        public string Generate()
+        public string CreateAssembly()
         {
-            // 1. Save textbox to .thrift file
-            //thriftText.Text
+            GC.Collect();
+            GC.WaitForFullGCComplete();
 
+
+            // 1. Save textbox to .thrift file
 
             CreateThriftFile("temp.thrift");
 

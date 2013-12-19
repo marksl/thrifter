@@ -1,6 +1,6 @@
-﻿namespace TestApp
+﻿namespace TestApp.UI
 {
-    partial class Form1
+    partial class ThrifterForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ThrifterForm));
             this.urlComboBox = new System.Windows.Forms.ComboBox();
             this.thriftText = new System.Windows.Forms.TextBox();
             this.Process = new System.Windows.Forms.Button();
@@ -117,7 +117,7 @@
             this.methodComboBox.Name = "methodComboBox";
             this.methodComboBox.Size = new System.Drawing.Size(486, 21);
             this.methodComboBox.TabIndex = 11;
-            this.methodComboBox.SelectedIndexChanged += new System.EventHandler(this.methodComboBox_SelectedIndexChanged);
+            this.methodComboBox.SelectedIndexChanged += new System.EventHandler(this.MethodComboBox_SelectedIndexChanged);
             // 
             // label4
             // 
@@ -136,7 +136,7 @@
             this.sendButton.TabIndex = 12;
             this.sendButton.Text = "Send";
             this.sendButton.UseVisualStyleBackColor = true;
-            this.sendButton.Click += new System.EventHandler(this.sendButton_Click);
+            this.sendButton.Click += new System.EventHandler(this.SendButton_Click);
             // 
             // label5
             // 
@@ -200,7 +200,7 @@
             this.Controls.Add(this.Process);
             this.Controls.Add(this.thriftText);
             this.Controls.Add(this.urlComboBox);
-            this.Name = "Form1";
+            this.Name = "ThrifterForm";
             this.Text = "Thrifter!!";
             this.ResumeLayout(false);
             this.PerformLayout();
