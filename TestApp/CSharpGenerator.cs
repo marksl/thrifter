@@ -35,7 +35,7 @@ namespace TestApp
         }
 
 
-        void DeleteFolder(string folderName)
+        static void DeleteFolder(string folderName)
         {
             var outputFolder = Path.Combine(Directory.GetCurrentDirectory(), folderName);
             if (Directory.Exists(outputFolder))
@@ -51,7 +51,7 @@ namespace TestApp
             }
         }
 
-        public string CreateAssembly()
+        public BuildResult Build()
         {
             GC.Collect();
             GC.WaitForFullGCComplete();
@@ -151,9 +151,11 @@ namespace TestApp
 
                     project.AddItem("Reference", "System.Core");
 
-                    bool success = project.Build("Build", new List<ILogger> {logger});
+                    var myLogger = new MyLogger();
+                    bool success = project.Build("Build", new List<ILogger> {logger , myLogger});
                     project.ProjectCollection.UnloadAllProjects();
-                    return success ? ".\\compiled\\" + assembly + ".dll" : null;
+
+                    return new BuildResult(success, ".\\compiled\\" + assembly + ".dll", myLogger.FailureMessage);
                 }
             }
         }

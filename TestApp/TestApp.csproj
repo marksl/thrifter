@@ -48,7 +48,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssemblyLoader.cs" />
+    <Compile Include="BuildResult.cs" />
     <Compile Include="CSharpGenerator.cs" />
+    <Compile Include="MyLogger.cs" />
     <Compile Include="ThriftMethod.cs" />
     <Compile Include="UI\ThrifterForm.cs">
       <SubType>Form</SubType>

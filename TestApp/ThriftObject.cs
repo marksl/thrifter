@@ -5,20 +5,24 @@ namespace TestApp
 {
     public class ThriftObject
     {
-        public ThriftObject()
+        public ThriftObject(ThriftObject parentObj, object obj, Type objType, string propertyName)
         {
+            ParentObj = parentObj;
+            Obj = obj;
+            ObjType = objType;
+            PropertyName = propertyName;
+
             IsNull = true;
             ChildObjs = new List<ThriftObject>();
         }
-        public string PropertyName { get; set; }
 
-        public ThriftObject ParentObj { get; set; }
-        public object Obj { get; set; }
-        public Type ObjType { get; set; }
+        public string PropertyName { get; private set; }
+        public ThriftObject ParentObj { get; private set; }
+        public object Obj { get; private set; }
+        public Type ObjType { get; private set; }
         public bool IsNull { get; set; }
         
-
-        public List<ThriftObject> ChildObjs { get; set; } 
+        public List<ThriftObject> ChildObjs { get; private set; } 
 
         public void SetProperty(string value)
         {
@@ -40,10 +44,8 @@ namespace TestApp
                     Obj = Convert.ToChar(value);
                 else if (ObjType.IsEnum)
                     Obj = Enum.Parse(Obj.GetType(), value);
-                else
-                    throw new InvalidOperationException();
             }
-            catch (Exception)
+            catch
             {
                 
             }

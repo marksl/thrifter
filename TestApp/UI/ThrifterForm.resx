@@ -155,12 +155,34 @@ exception TwitterUnavailable {
 
 const i32 MAX_RESULTS = 100;
 
+struct EchoStruct {
+ 1: optional bool optionalEchoBool;
+ 2: optional byte optionalEchoByte;
+ 3: optional TweetType optionalEchoEnum;
+ 4: optional i16 optionalEchoIntOne; 
+ 5: optional i32 optionalEchoIntTwo;
+ 6: optional i64 optionalEchoIntThree;
+ 7: optional double optionalEchoDouble;
+ 8: optional string optionalEchoString;
+ 9: required bool requiredEchoBool;
+ 10: required byte requiredEchoByte;
+ 11: required TweetType requiredEchoEnum;
+ 12: required i16 requiredEchoIntOne; 
+ 13: required i32 requiredEchoIntTwo;
+ 14: required i64 requiredEchoIntThree;
+ 15: required double requiredEchoDouble;
+ 16: required string requiredEchoString;
+}
+
 service Twitter {
+    
     void ping(),
     bool postTweet(1:Tweet tweet) throws (1:TwitterUnavailable unavailable),
     TweetSearchResult searchTweets(1:string query);
     oneway void zip()
-}
-</value>
+}</value>
   </data>
+  <metadata name="errorProvider1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+    <value>17, 17</value>
+  </metadata>
 </root>

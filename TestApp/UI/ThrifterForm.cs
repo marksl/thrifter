@@ -14,6 +14,8 @@ namespace TestApp.UI
         {
             InitializeComponent();
 
+            thriftText.KeyUp += ThriftText_KeyUp;
+
             var items = new List<ThrifterComboBoxItem>
                             {
                                 new ThrifterComboBoxItem("http://localhost:53959/HttpTest/json.thrift", "0"),
@@ -41,6 +43,15 @@ namespace TestApp.UI
             requestTreeView.AfterLabelEdit += RequestTreeView_AfterLabelEdit;
         }
 
+        private void ThriftText_KeyUp(object sender, KeyEventArgs e)
+        {
+            if ((e.Modifiers == Keys.Control)
+                && e.KeyCode == Keys.A)
+            {
+                thriftText.SelectAll();
+            }
+        }
+
         private static void RequestTreeView_AfterLabelEdit(object sender, NodeLabelEditEventArgs e)
         {
             var node = e.Node as ThrifterTreeNode;
@@ -60,18 +71,30 @@ namespace TestApp.UI
 
         private void Process_Click(object sender, EventArgs e)
         {
+            Cursor.Current = Cursors.WaitCursor;
+
+            errorProvider1.Clear();
+
+            requestTreeView.Nodes.Clear();
+            responseTreeView.Nodes.Clear();
+
             _assemblyLoader = null;
 
             var generator = new CSharpGenerator(thriftText.Text);
-            string assembly = generator.CreateAssembly();
-            
-            _assemblyLoader = new AssemblyLoader(assembly);
+            var buildResult = generator.Build();
+            if (!buildResult.Success)
+            {
+                errorProvider1.SetError(thriftText, buildResult.FailureMessage);
+
+                return;
+            }
+
+            _assemblyLoader = new AssemblyLoader(buildResult.AssemblyName);
             _assemblyLoader.Load();
 
             methodComboBox.DataSource = _assemblyLoader.MethodNames.Select(x => new ThrifterComboBoxItem(x, x)).ToList();
 
-            requestTreeView.Nodes.Clear();
-            responseTreeView.Nodes.Clear();
+            Cursor.Current = Cursors.Default;
         }
 
         private void SendButton_Click(object sender, EventArgs e)

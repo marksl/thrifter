@@ -20,13 +20,7 @@ namespace TestApp
         {
             var objType = obj.GetType();
 
-            var t = new ThriftObject
-            {
-                Obj = obj, // Probably not needed
-                ParentObj = parentObj,
-                PropertyName = string.Format("{0}={1}", propertyName, obj.GetType().Name),
-                ObjType = objType
-            };
+            var t = new ThriftObject(parentObj, obj, objType, string.Format("{0}={1}", propertyName, obj.GetType().Name));
             if (parentObj != null)
             {
                 parentObj.ChildObjs.Add(t);
@@ -38,13 +32,7 @@ namespace TestApp
 
                 foreach (var l in list)
                 {
-                    var t2 = new ThriftObject
-                    {
-                        Obj = l, // Probably not needed
-                        ParentObj = t,
-                        PropertyName = string.Format("{0}={1}", propertyName, l.GetType().Name),
-                        ObjType = l.GetType()
-                    };
+                    var t2 = new ThriftObject(t, l, l.GetType(), string.Format("{0}={1}", propertyName, l.GetType().Name));
                     t.ChildObjs.Add(t2);
 
                     CreateResponseThriftObjects(l, l.GetType().GetProperties(), t2);

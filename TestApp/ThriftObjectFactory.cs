@@ -27,25 +27,18 @@ namespace TestApp
         private static ThriftObject CreateThriftObjects(Type type, string propertyName, ThriftObject parentObj)
         {
             object instance = null;
-            if (type != typeof(string))
+            if (type != typeof (string))
             {
                 instance = Activator.CreateInstance(type);
             }
 
-
-            var t = new ThriftObject
-            {
-                Obj = instance,
-                ParentObj = parentObj,
-                PropertyName = propertyName,
-                ObjType = type
-            };
+            var t = new ThriftObject(parentObj, instance, type, propertyName);
             if (parentObj != null)
             {
                 parentObj.ChildObjs.Add(t);
             }
 
-            if (type.IsValueType || type == typeof(string))
+            if (type.IsValueType || type == typeof (string))
             {
                 t.IsNull = false;
             }
@@ -58,7 +51,5 @@ namespace TestApp
 
             return t;
         }
-
-
     }
 }
