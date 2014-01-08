@@ -101,7 +101,7 @@ namespace TestApp.UI
         {
             if (_classAndMethod != null)
             {
-                var url = ((ThrifterComboBoxItem) urlComboBox.SelectedItem).Name;
+                var url = urlComboBox.Text;//((ThrifterComboBoxItem) urlComboBox.Text.SelectedItem).Name;
                 var protocolName = ((ThrifterComboBoxItem)protocolComboBox.SelectedItem).Name;
 
                 Cursor.Current = Cursors.WaitCursor;

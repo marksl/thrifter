@@ -8,16 +8,32 @@ namespace TestApp
     {
         private static void CreateResponseThriftObjects(object obj, IEnumerable<PropertyInfo> getParameters, ThriftObject parentObj)
         {
+            if (obj.GetType().Name == "RuntimeModule")
+                return;
+
             foreach (var parameter in getParameters)
             {
-                var newObj = parameter.GetValue(obj, null);
+                if (parameter.Name == "TargetSite")
+                    continue;
 
-                CreateResponseThriftObjects(newObj, parameter.Name, parentObj);
+                try
+                {
+                    var newObj = parameter.GetValue(obj, null);
+
+                    CreateResponseThriftObjects(newObj, parameter.Name, parentObj);
+                }
+                catch{}
             }
         }
 
         public static ThriftObject CreateResponseThriftObjects(object obj, string propertyName, ThriftObject parentObj)
         {
+            if (obj == null)
+                return null;
+
+            if (propertyName == "TargetSite")
+                return null;
+
             var objType = obj.GetType();
 
             var t = new ThriftObject(parentObj, obj, objType, string.Format("{0}={1}", propertyName, obj.GetType().Name));
