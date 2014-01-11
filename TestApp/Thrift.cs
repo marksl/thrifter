@@ -4,7 +4,6 @@ using Thrift.Transport;
 
 namespace TestApp
 {
-// Test update
     public static class Thrift
     {
         public static TProtocol GetProtocol(string protocolName, TTransport transport)
