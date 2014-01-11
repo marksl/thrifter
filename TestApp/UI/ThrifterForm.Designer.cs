@@ -60,6 +60,7 @@
             // thriftText
             // 
             this.thriftText.Location = new System.Drawing.Point(22, 40);
+            this.thriftText.MaxLength = 1000000;
             this.thriftText.Multiline = true;
             this.thriftText.Name = "thriftText";
             this.thriftText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
